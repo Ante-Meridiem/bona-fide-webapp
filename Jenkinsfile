@@ -1,12 +1,12 @@
 //Jenkinsfile for Bona-Fide-User
 node{
-	/*stage('CLEAN BUILD'){
+	stage('CLEAN BUILD'){
 	    def mvnHome = tool name: 'Maven', type: 'maven'
-	    def mvnCmd = "${mvnHome}/bin/mvn"
-	    sh "${mvnCmd} clean package"
-	}*/
+	    def mvnCmd = "${mvnHome}\\bin\\mvn"
+	    bat "${mvnCmd} clean package"
+	}
 	
-	stage('RELEASE CONFIRMATION'){
+	/*stage('RELEASE CONFIRMATION'){
 		def inputMessage = "Please provide the RELEASE VERSION for Bona Fide User Service"
 		getBuildVersion()
         	timeout(time: 30, unit: 'MINUTES') {
@@ -19,12 +19,12 @@ node{
 		sh "docker build -f Dockerfile -t talk2linojoy/bona-fide-user-service/${buildVersion} ."
 	}
 	
-	/*stage('DOCKER IMAGE PUSH'){
+	stage('DOCKER IMAGE PUSH'){
 		withCredentials([string(credentialsId: 'docker-hub-password', variable: 'dockerHubPassword')]) {
 			sh "docker login -u talk2linojoy -p ${dockerHubPassword}"	
 		}
 		sh "docker push talk2linojoy/${buildVersion}"
-	}*/
+	}
 	
 	stage('STOPPING RUNNING CONTAINER'){
 		script{
@@ -63,7 +63,7 @@ node{
 				echo 'Deployment Unsuccessfull,please have a look!!!'
 			}
                 }
-	}
+	}*/
 	
 }
 def containerNameWithRegularExpression = '^bona_fide_user_service_container$'
