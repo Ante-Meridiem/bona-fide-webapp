@@ -68,6 +68,7 @@ node{
 def doScmCheckoutAndGetBuildVersion(){
   git credentialsId: 'bona-fide', url: 'https://github.com/Ante-Meridiem/Bona-Fide-Web-App.git'
 	def masterCommit = bat(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-	def currentDate = bat(returnStdout: true, script: 'date +%Y-%m-%d').trim()
+	def now = new Date()
+	def currentDate = now.format("YYYY-MM-D", TimeZone.getTimeZone('UTC'))
 	env.BUILD_VERSION = currentDate + "-" + masterCommit
 }
