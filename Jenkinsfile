@@ -1,7 +1,10 @@
 //Jenkinsfile for Bona-Fide-User
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 node{
 	stage('RELEASE CONFIRMATION'){
-	  def inputMessage = "Please provide the RELEASE VERSION for Bona Fide User Service"
+	  def inputMessage = "Please provide the RELEASE VERSION for Bona Fide Web App"
 	  doScmCheckoutAndGetBuildVersion()
 		timeout(time: 30, unit: 'MINUTES') {
 		      buildVersion = input(id: 'buildVersion', message: inputMessage, parameters: [
@@ -66,9 +69,9 @@ node{
 
 }
 def doScmCheckoutAndGetBuildVersion(){
-  git credentialsId: 'bona-fide', url: 'https://github.com/Ante-Meridiem/Bona-Fide-Web-App.git'
+  	git credentialsId: 'bona-fide', url: 'https://github.com/Ante-Meridiem/Bona-Fide-Web-App.git'
 	def masterCommit = bat(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-	def now = new Date()
-	def currentDate = now.format("YYYY-MM-D", TimeZone.getTimeZone('UTC'))
+	def now = LocalDateTime.now()
+	def currentDate = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 	env.BUILD_VERSION = currentDate + "-" + masterCommit
 }
