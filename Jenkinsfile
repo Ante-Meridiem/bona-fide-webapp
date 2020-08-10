@@ -12,11 +12,11 @@ node{
 		}
 	}
 
-	stage('CLEAN BUILD'){
+	/*stage('CLEAN BUILD'){
 		    def mvnHome = tool name: 'Maven', type: 'maven'
 		    def mvnCmd = "${mvnHome}\\bin\\mvn"
 		    bat "${mvnCmd} clean package"
-	}
+	}*/
 
 	stage('DOCKER IMAGE BUILD'){
 			bat "docker build -f Dockerfile -t talk2linojoy/bona-fide-web-app/${buildVersion} ."
