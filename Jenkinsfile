@@ -9,6 +9,11 @@ node{
         	}
 	}
 	
+	stage('Copying JAR'){
+		sh label: '', script: '''mkdir target
+		sudo cp /home/ec2-user/Bona-Fide-Web-App/target/bona-fide-web-app.jar /target'''	
+	}
+	
     	stage('DOCKER IMAGE BUILD'){
 		sh "docker build -f Dockerfile -t talk2linojoy/bona-fide-web-app/${buildVersion} ."
 	}
