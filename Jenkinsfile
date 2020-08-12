@@ -10,8 +10,8 @@ node{
 	}
 	
 	stage('Copying JAR'){
-		sh label: '', script: '''mkdir target
-		sudo cp /home/ec2-user/Bona-Fide-Web-App/target/bona-fide-web-app.jar /target'''	
+		sh label: '', script: '''mkdir target'''
+		sh label: '', script: '''cp /home/ec2-user/Bona-Fide-Web-App/target/bona-fide-web-app.jar /target'''	
 	}
 	
     	stage('DOCKER IMAGE BUILD'){
