@@ -9,9 +9,10 @@ node{
         	}
 	}
 	
-	stage('Copying JAR'){
-		sh label: '', script: '''mkdir target'''
-		sh label: '', script: '''cp /home/ec2-user/Bona-Fide-Web-App/target/bona-fide-web-app.jar /target'''	
+	stage('GETTING JAR FROM BUILD'){
+		sh label: '', script: '''sudo mkdir -p target'''
+		sh label: '', script: '''sudo cp /home/ec2-user/Bona-Fide-Web-App/target/bona-fide-web-app.jar target'''
+		sh label: '', script: 'sudo cp /home/ec2-user/Bona-Fide-Web-App/Dockerfile .'
 	}
 	
     	stage('DOCKER IMAGE BUILD'){
@@ -58,7 +59,7 @@ node{
 				echo "Deployment Successfull,Application Bona Fide Web App is up and running in port 9000 with build version ${buildVersion}"
 			}
 			else{
-				echo 'Deployment Unsuccessfull!!!'
+				echo 'Deployment Unsuccessfull Please check!!!'
 			}
                 }
 	}
