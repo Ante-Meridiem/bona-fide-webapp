@@ -12,7 +12,7 @@ node{
 	
 	stage('GETTING JAR FROM BUILD'){
 		sh label: '', script: '''sudo mkdir -p target'''
-		sh label: '', script: '''sudo cp /home/ec2-user/Bona-Fide-Web-App/target/bona-fide-web-app.jar target'''
+		sh label: '', script: '''sudo cp /home/ec2-user/Bona-Fide-Web-App/bona-fide-web-app.jar target'''
 		sh label: '', script: 'sudo cp /home/ec2-user/Bona-Fide-Web-App/Dockerfile .'
 	}
 	
