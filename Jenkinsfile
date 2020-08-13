@@ -1,3 +1,4 @@
+//BONA-FIDE-WEB-APP
 node{
 
 	stage('RELEASE CONFIRMATION'){
@@ -28,7 +29,7 @@ node{
 	
 	stage('STOPPING RUNNING CONTAINER'){
 		script{
-			final String currentImageId = sh(script: 'docker ps -q --filter name="^bona_fide_web_app_container$" --filter status=running',returnStdout: true)
+			final String currentImageId = sh(script: 'docker ps -q --filter name="^bona_fide_web_app_container$"',returnStdout: true)
 			if(!currentImageId.isEmpty()){
 				echo 'Stopping Current Container'
 				sh 'docker stop bona_fide_web_app_container'
@@ -46,27 +47,28 @@ node{
 		sleep 59
 	}
 	
-	stage('DOCKER CONTAINER HEALTH CHECK'){
+	stage('HEALTH CHECK'){
 		script {
-                    final String url = 'http://ec2-13-235-2-41.ap-south-1.compute.amazonaws.com:9000/bona-fide-web-app/base/version'
-                    final String response = sh(script: "curl -Is $url | head -1", returnStdout: true).trim()
+            final String url = 'http://ec2-13-235-2-41.ap-south-1.compute.amazonaws.com:9000/index.html'
+            final String response = sh(script: "curl -Is $url | head -1", returnStdout: true).trim()
 			if(response == "HTTP/1.1 200"){
 				final String dockerImageId = sh(script: 'docker ps -q --filter name="^bona_fide_web_app_container_old$"',returnStdout: true)  
 				if(!dockerImageId.isEmpty()){
 					sh 'docker rm bona_fide_web_app_container_old'
-					echo 'Successfully removed the previous container' 
+					echo 'Successfully removed the previous container'
+                    sh 'docker rmi -f $(docker inspect bona_fide_web_app_container_old --format=\'{{.Image}}\')'
+                    echo 'Successfully removed the previous container Image Id'
 				}
 				echo "Deployment Successfull,Application Bona Fide Web App is up and running in port 9000 with build version ${buildVersion}"
 			}
 			else{
 				echo 'Deployment Unsuccessfull Please check!!!'
 			}
-                }
+        }
 	}
 	
 }
-def containerNameWithRegularExpression = '^bona_fide_container$'
-def oldContainerNameWithRegularExpression = '^bona_fide_container_old$'
+
 def getBuildVersion(){
 	git credentialsId: 'bona-fide', url: 'git@github.com:Ante-Meridiem/Bona-Fide-Web-App.git'
 	def masterCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
